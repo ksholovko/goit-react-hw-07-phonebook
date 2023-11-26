@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { add } from "redux/contactsSlice";
+import { addContact, fetchContacts } from "redux/operations";
 import { nanoid } from "nanoid";
 import css from "./contactForm.module.css"
+import { selectContacts } from "redux/selectors";
 
 export default function ContactForm() {
     
     const dispatch = useDispatch();
-    const contacts = useSelector((state) => state.phonebook.contacts);
+    const contacts = useSelector(selectContacts);
 
     const [name, setName] = useState('');
-    const [number, setNumber] = useState('');
+    const [phone, setPhone] = useState('');
 
     const nameInputId = nanoid();
     const telInputId = nanoid();
+
+
+    useEffect(() => {
+        dispatch(fetchContacts())
+    }, [dispatch])
 
     const handleInputChange = event => {
     
@@ -24,8 +30,8 @@ export default function ContactForm() {
                 setName(value);
                 break;
         
-            case "number":
-                setNumber(value);
+            case "phone":
+                setPhone(value);
                 break;
          
             default:
@@ -36,27 +42,26 @@ export default function ContactForm() {
     const handleSubmit = event => {
     
         event.preventDefault();
-        const newContact = { id: nanoid(), name, number };
+        const newContact = { name, phone };
         
         if (contacts.find(contact => contact.name.toLowerCase() === newContact.name.toLowerCase())) {
     alert(`${newContact.name} is already in the contacts`);
     return;
         }
         
-    dispatch(add(newContact));
-      
+        dispatch(addContact(newContact));
       setName('');
-      setNumber('');
+      setPhone('');
     }
 
 return ( 
             
-            <form className={css.form} onSubmit={handleSubmit}>
+    <form className={css.form} onSubmit={handleSubmit}>
         <label htmlFor={nameInputId} className={css.label}> Name </label>
-                <input className={css.formInput} id={nameInputId} type="text" name="name" value={name} required onChange={handleInputChange} />
+        <input className={css.formInput} id={nameInputId} type="text" name="name" value={name} required onChange={handleInputChange} />
         <label htmlFor={telInputId} className={css.label}>Number</label>
-        <input className={css.formInput} id={telInputId} type="tel" name="number" value={number} required onChange={handleInputChange} />     
-                <button className={css.button} type="submit">Add contact</button>
+        <input className={css.formInput} id={telInputId} type="tel" name="phone" value={phone} required onChange={handleInputChange} />     
+        <button className={css.button} type="submit">Add contact</button>
     </form>
     
         )
