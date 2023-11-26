@@ -1,0 +1,26 @@
+.contact {
+    width: 250px;
+    margin-right: 10px;
+}
+
+.button {
+
+    justify-self: end;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    color: #f2f6f8;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    padding: 0 1rem;
+    border: 0;
+    border-radius: 3rem;
+    background-image: linear-gradient(131deg, #388797, #2b336f, #3d4460, #171222);
+    background-size: 300% 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+.button:hover:enabled {
+    box-shadow: 0 0.5em 0.5em -0.4em #388797;
+    background-size: 100% 100%;
+    transform: translateY(-0.15em);
+}
